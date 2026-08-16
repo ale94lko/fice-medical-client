@@ -1,0 +1,9 @@
+.DS_Store
+node_modules
+.quasar
+/dist
+/quasar.config.*.temporary.compiled*
+npm-debug.log*
+.env.local*
+.env
+.idea

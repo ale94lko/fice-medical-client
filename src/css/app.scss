@@ -1,0 +1,35 @@
+@import 'inter-font';
+@import 'quasar.variables';
+
+body {
+  font-family: $typography-font-family;
+}
+
+.guest-layout .guest-header,
+.portal-layout .portal-header {
+  background: $primary;
+  color: #fff;
+}
+
+.guest-page {
+  min-height: calc(100vh - 50px);
+  background: $page-bg;
+  padding: 24px;
+}
+
+.guest-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+}
+
+.portal-page {
+  padding: 24px;
+  background: $page-bg;
+  min-height: calc(100vh - 50px);
+}
+
+a {
+  text-decoration: none;
+}

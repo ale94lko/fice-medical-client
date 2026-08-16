@@ -1,0 +1,88 @@
+import { defineBoot } from '#q-app/wrappers'
+import axios from 'axios'
+import { Notify } from 'quasar'
+import { resolveTenantDomainFromHost } from 'src/utils/tenant-from-host.js'
+import { deepMapRequestKeysToSnakeCase } from 'src/utils/request-key-case.js'
+
+function resolveApiBaseUrl() {
+  const fromEnv = String(import.meta.env.VITE_API_BASE_URL ?? '').trim()
+  if (fromEnv) {
+    return fromEnv.replace(/\/$/, '')
+  }
+  return ''
+}
+
+const api = axios.create({
+  baseURL: resolveApiBaseUrl(),
+})
+
+let refreshInFlight = null
+
+function isAuthPath(url) {
+  const path = String(url ?? '')
+  return path.includes('/portal/v1/auth/login')
+    || path.includes('/portal/v1/auth/refresh')
+    || path.includes('/portal/v1/auth/register')
+}
+
+api.interceptors.request.use(async(config) => {
+  config.headers = config.headers ?? {}
+  config.headers['X-Tenant-Key'] = resolveTenantDomainFromHost()
+  if (config.data && !(config.data instanceof FormData)) {
+    config.data = deepMapRequestKeysToSnakeCase(config.data)
+  }
+  try {
+    const { useAuthStore } = await import('stores/auth-store.js')
+    const token = useAuthStore().accessToken
+    if (token && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+  } catch {
+    // Pinia may be unavailable during very early boot
+  }
+  return config
+})
+
+api.interceptors.response.use(
+  response => response,
+  async(error) => {
+    const status = error.response?.status
+    const original = error.config
+    const canRefresh = status === 401
+      && original
+      && !original._retry
+      && !isAuthPath(original.url)
+    if (canRefresh) {
+      original._retry = true
+      try {
+        const { useAuthStore } = await import('stores/auth-store.js')
+        const store = useAuthStore()
+        if (!refreshInFlight) {
+          refreshInFlight = store.refreshSession().finally(() => {
+            refreshInFlight = null
+          })
+        }
+        await refreshInFlight
+        original.headers = original.headers ?? {}
+        original.headers.Authorization = `Bearer ${store.accessToken}`
+        return api(original)
+      } catch {
+        const { useAuthStore } = await import('stores/auth-store.js')
+        await useAuthStore().clearSession()
+      }
+    }
+    const message = error.response?.data?.message
+      || error.response?.data?.error_description
+      || error.response?.data?.error
+    if (status >= 400 && message && status !== 401) {
+      Notify.create({ type: 'negative', message: String(message) })
+    }
+    return Promise.reject(error)
+  },
+)
+
+export default defineBoot(({ app }) => {
+  app.config.globalProperties.$api = api
+})
+
+export { api }

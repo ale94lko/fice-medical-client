@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <script>
+      sessionStorage.redirect =
+        location.pathname + location.search + location.hash;
+      location.replace(location.origin + '/fice-medical-client/');
+    </script>
+  </body>
+</html>

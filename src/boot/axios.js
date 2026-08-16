@@ -4,12 +4,15 @@ import { Notify } from 'quasar'
 import { resolveTenantDomainFromHost } from 'src/utils/tenant-from-host.js'
 import { deepMapRequestKeysToSnakeCase } from 'src/utils/request-key-case.js'
 
+const DEFAULT_API_BASE_URL =
+  'https://drippy-phonebook-wildcard.ngrok-free.dev'
+
 function resolveApiBaseUrl() {
   const fromEnv = String(import.meta.env.VITE_API_BASE_URL ?? '').trim()
   if (fromEnv) {
     return fromEnv.replace(/\/$/, '')
   }
-  return ''
+  return DEFAULT_API_BASE_URL
 }
 
 const api = axios.create({
@@ -28,6 +31,8 @@ function isAuthPath(url) {
 api.interceptors.request.use(async(config) => {
   config.headers = config.headers ?? {}
   config.headers['X-Tenant-Key'] = resolveTenantDomainFromHost()
+  // TODO(producción): quitar — header provisional ngrok (desarrollo).
+  config.headers['ngrok-skip-browser-warning'] = 'true'
   if (config.data && !(config.data instanceof FormData)) {
     config.data = deepMapRequestKeysToSnakeCase(config.data)
   }

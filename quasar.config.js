@@ -23,7 +23,11 @@ function devApiProxy(target) {
 export default defineConfig((ctx) => {
   const mode = ctx.dev ? 'development' : 'production'
   const viteEnv = loadEnv(mode, process.cwd(), '')
-  const apiProxyTarget = String(viteEnv.API_PROXY_TARGET ?? '').trim()
+  const defaultProxy =
+    'https://drippy-phonebook-wildcard.ngrok-free.dev'
+  const apiProxyTarget = String(
+    viteEnv.API_PROXY_TARGET || (ctx.dev ? defaultProxy : ''),
+  ).trim()
 
   return {
     boot: ['i18n', 'axios'],

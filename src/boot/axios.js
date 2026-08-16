@@ -7,7 +7,15 @@ import { deepMapRequestKeysToSnakeCase } from 'src/utils/request-key-case.js'
 const DEFAULT_API_BASE_URL =
   'https://drippy-phonebook-wildcard.ngrok-free.dev'
 
+function isNgrokUrl(url) {
+  return /ngrok(-free)?\.(dev|app|io)/i.test(String(url ?? ''))
+}
+
 function resolveApiBaseUrl() {
+  // DEV: same-origin so Quasar can proxy /portal and skip ngrok CORS.
+  if (import.meta.env.DEV) {
+    return ''
+  }
   const fromEnv = String(import.meta.env.VITE_API_BASE_URL ?? '').trim()
   if (fromEnv) {
     return fromEnv.replace(/\/$/, '')
@@ -31,8 +39,10 @@ function isAuthPath(url) {
 api.interceptors.request.use(async(config) => {
   config.headers = config.headers ?? {}
   config.headers['X-Tenant-Key'] = resolveTenantDomainFromHost()
-  // TODO(producción): quitar — header provisional ngrok (desarrollo).
-  config.headers['ngrok-skip-browser-warning'] = 'true'
+  if (isNgrokUrl(config.baseURL ?? api.defaults.baseURL)) {
+    // TODO(producción): quitar — header provisional ngrok (desarrollo).
+    config.headers['ngrok-skip-browser-warning'] = 'true'
+  }
   if (config.data && !(config.data instanceof FormData)) {
     config.data = deepMapRequestKeysToSnakeCase(config.data)
   }

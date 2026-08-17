@@ -5,5 +5,5 @@ node_modules
 /quasar.config.*.temporary.compiled*
 npm-debug.log*
 .env.local*
-.env
+
 .idea

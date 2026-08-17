@@ -5,7 +5,8 @@ export function resolveTenantDomainFromHost(hostname) {
     .trim()
     .toLowerCase()
     .split(':')[0]
-  if (!host || host === 'localhost' || /^\d{1,3}(\.\d{1,3}){3}$/.test(host)) {
+  if (!host || host === 'localhost' || /^\d{1,3}(\.\d{1,3}){3}$/.test(host)
+    || host.endsWith('.github.io')) {
     const params = new URLSearchParams(window.location.search)
     return String(params.get('domain') ?? '').trim().toLowerCase() || 'pruebas'
   }

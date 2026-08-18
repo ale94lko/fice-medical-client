@@ -1,0 +1,1 @@
+import{O as e,X as t}from"./runtime-core.esm-bundler-BWIm6Ghh.js";import{f as n}from"./nodes-BezYCyRH.js";function r(){let r=t(!n.value);return r.value||e(()=>{r.value=!0}),{isHydrated:r}}export{r as t};

@@ -1,0 +1,140 @@
+export const portalTestIds = {
+  profileFieldFirstName: 'profile-field-first-name',
+  profileFieldLastName: 'profile-field-last-name',
+  profileFieldDob: 'profile-field-dob',
+  profileFieldPhone: 'profile-field-phone',
+  profileFieldEmail: 'profile-field-email',
+  profileFieldSex: (value) => (
+    `profile-field-sex-${String(value ?? '').toLowerCase()}`
+  ),
+  profileFieldLanguage: (value) => (
+    `profile-field-language-${String(value ?? '').toLowerCase()}`
+  ),
+  profileFieldComm: (value) => (
+    `profile-field-comm-${String(value ?? '')
+      .toLowerCase()
+      .replace(/_/g, '-')}`
+  ),
+  profileFieldAddressLine1: 'profile-field-address-line1',
+  profileFieldAddressLine2: 'profile-field-address-line2',
+  profileFieldCity: 'profile-field-city',
+  profileFieldState: 'profile-field-state',
+  profileFieldZip: 'profile-field-zip',
+  profileFieldEmergencyFirst: 'profile-field-emergency-first',
+  profileFieldEmergencyLast: 'profile-field-emergency-last',
+  profileFieldEmergencyRel: 'profile-field-emergency-rel',
+  profileFieldEmergencyPhone: 'profile-field-emergency-phone',
+  profileFieldInsurancePayer: 'profile-field-insurance-payer',
+  profileFieldInsuranceMember: 'profile-field-insurance-member',
+  profileFieldInsuranceFrom: 'profile-field-insurance-from',
+  profileFieldInsuranceTo: 'profile-field-insurance-to',
+  profileNoAllergies: 'profile-no-allergies',
+  profileBtnAddAllergy: 'profile-btn-add-allergy',
+  profileAllergyName: (index) => `profile-allergy-name-${index}`,
+  profileAllergySeverity: (index) => (
+    `profile-allergy-severity-${index}`
+  ),
+  profileAllergyRemove: (index) => (
+    `profile-allergy-remove-${index}`
+  ),
+  profileBtnSave: 'profile-btn-save',
+  dashboardCompleteProfile: 'dashboard-btn-complete-profile',
+  dashboardNextAppointment: 'dashboard-next-appointment',
+  dashboardRequests: 'dashboard-appointment-requests',
+  dashboardScheduled: 'dashboard-appointments-scheduled',
+  dashboardConsents: 'dashboard-pending-consents',
+  dashboardDocuments: 'dashboard-documents',
+  dashboardJoin: (id) => `dashboard-btn-join-${id}`,
+  appointmentsPage: 'appointments-page',
+  appointmentsOpenRequests: 'appointments-open-requests',
+  appointmentsBtnRequest: 'appointments-btn-request',
+  appointmentsRequestDialog: 'appointments-request-dialog',
+  appointmentsRequestDialogClose:
+    'appointments-request-dialog-close',
+  appointmentsRequestDialogCancel:
+    'appointments-request-dialog-cancel',
+  appointmentsBtnBook: 'appointments-btn-book',
+  appointmentsFieldPreferredStart: 'appointments-field-preferred-start',
+  appointmentsFieldPreferredTime: 'appointments-field-preferred-time',
+  appointmentsFieldNotes: 'appointments-field-notes',
+  appointmentsFieldRequestService: 'appointments-field-request-service',
+  appointmentsFieldBookService: 'appointments-field-book-service',
+  appointmentsBtnSearchSlots: 'appointments-btn-search-slots',
+  appointmentsSlot: (index) => `appointments-slot-${index}`,
+  appointmentsCancel: (id) => `appointments-btn-cancel-${id}`,
+  appointmentsJoin: (id) => `appointments-btn-join-${id}`,
+  appointmentsRequestCancel: (id) => (
+    `appointments-btn-request-cancel-${id}`
+  ),
+  bookingWizard: 'booking-wizard',
+  bookingService: (id) => `booking-service-${id}`,
+  bookingClinicianAny: 'booking-clinician-any',
+  bookingClinician: (id) => `booking-clinician-${id}`,
+  bookingWhenSoonest: 'booking-when-soonest',
+  bookingWhenDay: 'booking-when-day',
+  bookingWhenRange: 'booking-when-range',
+  bookingFieldDate: 'booking-field-date',
+  bookingFieldFromDate: 'booking-field-from-date',
+  bookingFieldToDate: 'booking-field-to-date',
+  bookingBtnSearchSlots: 'booking-btn-search-slots',
+  bookingBtnNextSlots: 'booking-btn-next-slots',
+  bookingTab: (period) => `booking-tab-${String(period).toLowerCase()}`,
+  bookingSlot: (startAtUtc) => {
+    const slug = String(startAtUtc ?? '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+    return `booking-slot-${slug}`
+  },
+  bookingFieldNotes: 'booking-field-notes',
+  bookingConfirmAccurate: 'booking-confirm-accurate',
+  bookingBtnBack: 'booking-btn-back',
+  bookingBtnNext: 'booking-btn-next',
+  bookingBtnNextClinician: 'booking-btn-next-clinician',
+  bookingBtnConfirm: 'booking-btn-confirm',
+  bookingBtnAnother: 'booking-btn-another',
+  bookingSuccess: 'booking-success',
+  selectLocationPage: 'select-location-page',
+  selectLocationItem: (id) => `select-location-${id}`,
+  headerLocationSwitch: 'header-location-switch',
+  headerLocationItem: (id) => `header-location-${id}`,
+  headerLocaleSwitch: 'header-locale-switch',
+  headerUserMenu: 'header-user-menu',
+  headerLogout: 'logout',
+  resendVerificationEmail: 'resend-verification-email',
+  resendVerificationSubmit: 'resend-verification-submit',
+  registerResend: 'register-btn-resend-verification',
+  registerFieldLocation: 'register-field-location',
+  inviteHasClientRecord: 'invite-has-client-record',
+  consentsPage: 'consents-page',
+  consentsBtnOpen: (id) => `consents-btn-open-${id}`,
+  consentsSignDialog: 'consents-sign-dialog',
+  consentsSignDialogClose: 'consents-sign-dialog-close',
+  consentsBtnSign: 'consents-btn-sign',
+  consentsBtnDecline: 'consents-btn-decline',
+  consentSignatureClear: 'consents-signature-btn-clear',
+}
+
+export const telehealthTestIds = {
+  lobbyJoin: 'telehealth-lobby-btn-join',
+  lobbyBack: 'telehealth-lobby-btn-back',
+  lobbyDeviceClose: 'telehealth-lobby-device-btn-close',
+  endedComplete: 'telehealth-ended-btn-complete',
+  endedLeave: 'telehealth-ended-btn-leave',
+  endedBack: 'telehealth-ended-btn-back',
+  inCallMute: 'telehealth-incall-btn-mute',
+  inCallVideo: 'telehealth-incall-btn-video',
+  inCallSpeaker: 'telehealth-incall-btn-speaker',
+  inCallScreen: 'telehealth-incall-btn-screen',
+  inCallChat: 'telehealth-incall-btn-chat',
+  inCallMinimize: 'telehealth-incall-btn-minimize',
+  inCallLeave: 'telehealth-incall-btn-leave',
+  chatSend: 'telehealth-chat-btn-send',
+  chatDelete: (id) => `telehealth-chat-btn-delete-${id}`,
+  fileDownload: (id) => `telehealth-file-btn-download-${id}`,
+  fileDelete: (id) => `telehealth-file-btn-delete-${id}`,
+  waitingLeave: 'telehealth-waiting-btn-leave',
+  admit: (id) => `telehealth-btn-admit-${id}`,
+  copyInvite: 'telehealth-btn-copy-invite',
+  resendInvite: 'telehealth-btn-resend-invite',
+}

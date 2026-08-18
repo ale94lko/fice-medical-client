@@ -15,9 +15,11 @@
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
     "@quasar/extras": "^1.16.4",
+    "@stomp/stompjs": "^7.3.0",
     "axios": "^1.14.0",
     "pinia": "^3.0.1",
     "quasar": "^2.16.0",
+    "sockjs-client": "^1.6.1",
     "vue": "^3.4.18",
     "vue-i18n": "11.1.10",
     "vue-router": "^4.0.0"

@@ -1,3 +1,5 @@
+// Quasar SCSS variables — Client Portal (aligned with staff login)
+
 $typography-font-family: Inter, 'Segoe UI', sans-serif;
 
 $primary   : #0f7a74;
@@ -5,11 +7,31 @@ $secondary : #e2e8f0;
 $accent    : #14b8a6;
 $dark      : #0f172a;
 $dark-page : #0f172a;
+
+$fice-teal-dark: #0b5e59;
+
 $positive  : #16a34a;
 $negative  : #dc2626;
 $info      : #0ea5e9;
 $warning   : #d97706;
-$page-bg   : #f4f6f8;
-$surface   : #ffffff;
-$radius-lg : 14px;
-$shadow-md : 0 8px 24px rgba(15, 23, 42, 0.08);
+
+$white     : #ffffff;
+$secondary-2: #f0fdfa;
+
+$page-bg         : #f4f6f8;
+$surface         : #ffffff;
+$surface-muted   : #f8fafc;
+$border-subtle   : rgba(15, 23, 42, 0.08);
+$text-muted      : #64748b;
+$text-hint       : #94a3b8;
+$text-strong     : #0f172a;
+$table-text-primary: #1e293b;
+$table-text-secondary: #475569;
+$radius-md       : 10px;
+$radius-lg       : 14px;
+$radius-btn      : 12px;
+$button-border-radius: $radius-btn;
+$shadow-sm       : 0 1px 2px rgba(15, 23, 42, 0.06);
+$shadow-md       : 0 8px 24px rgba(15, 23, 42, 0.08);
+$app-button-height: 46px;
+$drawer-width: 248px;

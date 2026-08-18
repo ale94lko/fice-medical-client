@@ -1,44 +1,48 @@
 <template>
-  <div>
-    <div class="text-h5 text-weight-bold q-mb-lg">
-      {{ t('resetPassword') }}
-    </div>
-    <q-banner v-if="done" class="bg-teal-1 q-mb-md" rounded>
+  <div class="auth-form">
+    <div class="auth-form__title">{{ t('resetPassword') }}</div>
+    <p class="auth-form__subtitle">{{ t('passwordRequirements') }}</p>
+    <q-banner
+      v-if="done"
+      class="auth-form__banner bg-teal-1"
+      rounded
+    >
       {{ t('accountActivated') }}
     </q-banner>
     <q-form v-else @submit.prevent="onSubmit">
-      <q-input
+      <LoginTextInput
         v-model="password"
         type="password"
-        outlined
-        dense
-        class="q-mb-md"
+        icon-left="lock"
         :label="t('password')"
-        :hint="t('passwordRequirements')"
-        data-testid="resetPassword"
+        test-id="resetPassword"
       />
-      <q-input
+      <LoginTextInput
         v-model="confirmPassword"
         type="password"
-        outlined
-        dense
-        class="q-mb-md"
+        icon-left="lock"
         :label="t('confirmPassword')"
-        data-testid="resetConfirmPassword"
+        test-id="resetConfirmPassword"
       />
-      <q-btn
-        type="submit"
-        color="primary"
-        class="full-width q-mb-md"
-        :label="t('submit')"
-        :loading="loading"
-        :disable="!token"
-        data-testid="resetSubmit"
-      />
+      <div class="auth-form__actions">
+        <q-btn
+          type="submit"
+          color="primary"
+          unelevated
+          no-caps
+          class="full-width auth-submit"
+          :label="t('submit')"
+          :loading="loading"
+          :disable="!token"
+          data-testid="resetSubmit"
+        />
+      </div>
     </q-form>
-    <router-link class="text-primary text-caption" to="/login">
-      {{ t('backToLogin') }}
-    </router-link>
+    <div class="auth-form__links">
+      <router-link class="auth-form__link" to="/login">
+        {{ t('backToLogin') }}
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -48,6 +52,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Notify } from 'quasar'
 import { api } from 'boot/axios'
+import LoginTextInput from 'src/components/LoginTextInput.vue'
 import { portalPaths } from 'src/utils/portal-api.js'
 
 const { t } = useI18n()

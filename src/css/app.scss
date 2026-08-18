@@ -1,35 +1,1180 @@
 @import 'inter-font';
 @import 'quasar.variables';
+@import 'login-promo-panel';
 
 body {
   font-family: $typography-font-family;
-}
-
-.guest-layout .guest-header,
-.portal-layout .portal-header {
-  background: $primary;
-  color: #fff;
-}
-
-.guest-page {
-  min-height: calc(100vh - 50px);
+  color: $text-strong;
   background: $page-bg;
-  padding: 24px;
-}
-
-.guest-card {
-  width: 100%;
-  max-width: 420px;
-  border-radius: $radius-lg;
-  box-shadow: $shadow-md;
-}
-
-.portal-page {
-  padding: 24px;
-  background: $page-bg;
-  min-height: calc(100vh - 50px);
 }
 
 a {
   text-decoration: none;
+}
+
+.q-btn:not(.q-btn--round) {
+  border-radius: $radius-btn;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px $surface inset !important;
+  -webkit-text-fill-color: $text-strong !important;
+  caret-color: $text-strong;
+}
+
+.login-container {
+  min-height: 100vh;
+  flex-wrap: nowrap;
+  background: linear-gradient(
+    160deg,
+    $secondary-2 0%,
+    $page-bg 55%,
+    $surface 100%
+  );
+
+  .login-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    flex: 1 1 0;
+    position: relative;
+    padding: 24px 16px;
+
+    &.mobile {
+      max-width: 100%;
+    }
+
+    .logo {
+      max-width: 115px;
+      margin-bottom: 24px;
+    }
+
+    .my-card {
+      width: 400px;
+      max-width: calc(100% - 32px);
+      padding: 36px 24px 28px;
+      border-radius: $radius-lg !important;
+      box-shadow: $shadow-md;
+      border: 1px solid $border-subtle;
+      background: $surface;
+    }
+  }
+}
+
+.guest-locale {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.auth-form {
+  .auth-form__title {
+    margin: 0 0 6px;
+    color: $text-strong;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .auth-form__subtitle {
+    margin: 0 0 24px;
+    color: $text-muted;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .login-text-input + .login-text-input,
+  .login-text-input + .q-select,
+  .q-select + .login-text-input,
+  .q-select + .q-select {
+    margin-top: 20px;
+  }
+
+  .auth-form__actions {
+    margin-top: 24px;
+  }
+
+  .auth-form__links {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .auth-form__link {
+    color: $primary;
+    font-size: 0.8125rem;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .auth-form__banner {
+    margin-bottom: 16px;
+    border-radius: $radius-md;
+  }
+
+  .auth-form__locations {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .auth-form__location {
+    min-height: $app-button-height;
+    justify-content: flex-start;
+    font-weight: 600;
+  }
+}
+
+.auth-submit {
+  min-height: $app-button-height;
+  font-weight: 600;
+}
+
+.portal-header {
+  background: $surface;
+  color: $text-strong;
+  border-bottom: 1px solid $border-subtle;
+  box-shadow: $shadow-sm;
+
+  .q-toolbar.portal-header__toolbar {
+    min-height: 56px;
+    padding: 0 16px;
+    gap: 8px;
+  }
+}
+
+.portal-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.portal-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.portal-brand__logo {
+  width: 36px;
+  height: 36px;
+}
+
+.portal-brand__name {
+  color: $text-strong;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.portal-header-pill,
+.portal-header-locale,
+.portal-header-user {
+  min-height: 38px;
+  font-weight: 600;
+}
+
+.portal-header .q-btn.portal-header-pill,
+.portal-header .q-btn.portal-header-locale,
+.portal-header .q-btn.portal-header-user {
+  border-radius: 999px;
+}
+
+.portal-header-pill.q-btn .q-btn__content,
+.portal-header-locale .q-btn__content,
+.portal-header-user .q-btn__content {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.portal-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(32vw, 220px);
+  min-width: 0;
+  padding: 4px 12px 4px 8px;
+  border: 1px solid $border-subtle;
+  background: $surface-muted;
+  color: $text-strong;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+}
+
+.portal-header-pill--interactive:hover {
+  border-color: rgba($primary, 0.45);
+  background: rgba($primary, 0.06);
+}
+
+.portal-header-pill__icon {
+  flex: 0 0 auto;
+  color: $primary;
+}
+
+.portal-header-pill__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portal-header-locale {
+  padding: 4px 10px;
+  color: $table-text-secondary;
+}
+
+.portal-header-user {
+  padding: 4px 10px 4px 4px;
+  color: $text-strong;
+}
+
+.portal-header-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba($primary, 0.14);
+  color: $fice-teal-dark;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.portal-header-user__name {
+  max-width: min(28vw, 200px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: $text-strong;
+}
+
+.portal-header-user__menu {
+  min-width: 240px;
+}
+
+.portal-drawer {
+  background: $surface;
+}
+
+.portal-nav-item {
+  border-radius: $radius-md;
+  margin: 2px 8px;
+  min-height: 44px;
+  color: $table-text-secondary;
+
+  &.q-router-link--active {
+    background: rgba($primary, 0.12);
+    color: $fice-teal-dark;
+    font-weight: 600;
+  }
+}
+
+.portal-page {
+  padding: 10px 24px 28px;
+  background: $page-bg;
+  min-height: calc(100vh - 50px);
+}
+
+.portal-page__inner {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.portal-page__title {
+  margin: 0 0 6px;
+  color: $text-strong;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.portal-page__lead {
+  margin: 0 0 12px;
+  color: $text-muted;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.portal-dashboard-grid {
+  > [class*='col-'] {
+    display: flex;
+  }
+
+  .portal-card {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.portal-card {
+  border-radius: $radius-lg !important;
+  box-shadow: $shadow-md;
+  border: 1px solid $border-subtle;
+  background: $surface;
+}
+
+.portal-profile-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background: $surface-muted;
+}
+
+.portal-profile-identity__hint {
+  margin: 8px 0 20px;
+  color: $text-muted;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.portal-profile-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba($primary, 0.14);
+  color: $fice-teal-dark;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.portal-profile-identity__text {
+  min-width: 0;
+}
+
+.portal-profile-identity__name {
+  color: $text-strong;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.portal-profile-identity__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  color: $text-muted;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  min-width: 0;
+}
+
+.portal-profile-identity__mail {
+  flex: 0 0 auto;
+  color: $primary;
+}
+
+.portal-profile-identity__meta span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portal-profile-form .portal-form__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.portal-choice-label {
+  margin-bottom: 8px;
+  color: $text-strong;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.portal-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+
+  .portal-booking-choice + .portal-booking-choice {
+    margin-top: 0;
+  }
+}
+
+.portal-allergy-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 220px) auto;
+  gap: 12px;
+  align-items: start;
+
+  & + & {
+    margin-top: 12px;
+  }
+
+  .login-text-input,
+  .q-select {
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .portal-allergy-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    .q-select {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.portal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.portal-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: rgba($primary, 0.14);
+  color: $primary;
+}
+
+.portal-banner {
+  border-radius: $radius-md;
+  background: rgba($primary, 0.1);
+  color: $table-text-primary;
+}
+
+.portal-action-card {
+  height: auto;
+  border-radius: $radius-lg !important;
+  box-shadow: $shadow-md;
+  border: 1px solid $border-subtle;
+}
+
+.portal-action-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: rgba($primary, 0.14);
+  color: $primary;
+}
+
+.portal-stat-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  .portal-action-card__icon {
+    margin-bottom: 0;
+  }
+}
+
+.portal-stat-card__count {
+  color: $text-strong;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.portal-stat-card__count--muted {
+  color: $text-hint;
+}
+
+.portal-form {
+  .login-text-input + .login-text-input,
+  .login-text-input + .q-select,
+  .q-select + .login-text-input,
+  .q-select + .q-select,
+  .q-select + .portal-datetime-row,
+  .portal-datetime-row + .login-text-input {
+    margin-top: 20px;
+  }
+
+  .portal-form__actions {
+    margin-top: 24px;
+  }
+}
+
+.portal-datetime-row {
+  > [class*='col-'] {
+    min-width: 0;
+  }
+}
+
+.portal-list-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid $border-subtle;
+
+  &:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+.portal-list-row__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.portal-section-head {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.portal-section-head__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba($primary, 0.14);
+  color: $primary;
+}
+
+.portal-section-head__text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.portal-section-head__title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.portal-section-head__title {
+  margin: 0;
+  color: $text-strong;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.portal-section-head__hint {
+  margin: 4px 0 0;
+  color: $text-muted;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.portal-dialog {
+  width: 100%;
+  max-width: 520px;
+}
+
+.portal-consent-dialog.q-dialog__inner--minimized
+  > .portal-dialog--wide {
+  width: 100% !important;
+  max-width: 920px !important;
+  min-width: 320px;
+  height: auto !important;
+  max-height: min(90vh, calc(100dvh - 48px)) !important;
+}
+
+.portal-dialog--wide {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 920px;
+  min-width: 320px;
+  max-height: min(90vh, calc(100dvh - 48px));
+  overflow: hidden;
+}
+
+@media (max-width: 599px) {
+  .portal-consent-dialog.q-dialog__inner--minimized
+    > .portal-dialog--wide,
+  .portal-dialog--wide {
+    min-width: 0;
+    width: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+}
+
+.portal-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px 0;
+}
+
+.portal-dialog__title {
+  margin: 0;
+  color: $text-strong;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.portal-dialog__body {
+  padding: 12px 24px 8px;
+}
+
+.portal-dialog--wide .portal-dialog__header,
+.portal-dialog--wide .portal-dialog__actions {
+  flex: 0 0 auto;
+}
+
+.portal-dialog--wide .portal-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.portal-dialog__hint {
+  margin: 0 0 16px;
+  color: $text-muted;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.portal-dialog__actions {
+  padding: 8px 24px 20px;
+  gap: 8px;
+}
+
+.portal-count-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba($primary, 0.14);
+  color: $fice-teal-dark;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.portal-open-requests__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.portal-request-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background: $surface-muted;
+}
+
+.portal-request-item__main {
+  min-width: 0;
+  flex: 1 1 220px;
+}
+
+.portal-status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba($warning, 0.16);
+  color: $warning;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.portal-request-item__when {
+  margin-top: 8px;
+  color: $text-strong;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.portal-request-item__time {
+  margin-top: 2px;
+  color: $table-text-secondary;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.portal-request-item__service {
+  margin-top: 8px;
+  color: $table-text-primary;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.portal-request-item__notes {
+  margin-top: 4px;
+  color: $text-muted;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.portal-request-item__action {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.portal-slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.portal-booking {
+  --booking-choice-h: 4.75rem;
+  --booking-panel-h: calc(
+    3.5 * var(--booking-choice-h) + 3 * 8px + 16px
+  );
+}
+
+.portal-booking__step-label {
+  margin: 0 0 12px;
+  color: $text-muted;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.portal-booking__choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  height: var(--booking-panel-h);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  align-content: start;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background: $surface;
+}
+
+.portal-booking-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-btn;
+  background: $surface-muted;
+  color: $text-strong;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+
+  & + & {
+    margin-top: 8px;
+  }
+
+  &:hover {
+    border-color: rgba($primary, 0.45);
+  }
+}
+
+.portal-booking__choices .portal-booking-choice {
+  min-width: 0;
+}
+
+.portal-booking__choices .portal-booking-choice--span {
+  grid-column: 1 / -1;
+}
+
+.portal-booking__choices .portal-booking-choice + .portal-booking-choice {
+  margin-top: 0;
+}
+
+.portal-booking__choices > p {
+  grid-column: 1 / -1;
+}
+
+.portal-booking__choices--grow {
+  height: auto;
+  min-height: var(--booking-panel-h);
+  overflow: visible;
+  align-items: start;
+}
+
+.portal-booking-choice__hit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.portal-booking-choice__fields {
+  width: 100%;
+  min-width: 0;
+  margin-top: 10px;
+}
+
+.portal-booking-choice__fields-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+
+  > .q-field {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto !important;
+    max-width: none;
+    margin-top: 0 !important;
+  }
+
+  .q-field__control,
+  .q-field__native,
+  .q-field__input,
+  .q-field__marginal {
+    min-width: 0;
+  }
+
+  .q-field__control {
+    padding-left: 8px;
+  }
+
+  .q-field__append {
+    padding-left: 0;
+  }
+}
+
+.portal-booking-choice--active {
+  border-color: $primary;
+  background: rgba($primary, 0.08);
+}
+
+.portal-booking-choice__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.portal-booking-choice__meta {
+  color: $text-muted;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  min-height: 1.15em;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.portal-booking__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.portal-booking-slots {
+  display: flex;
+  flex-direction: column;
+  height: var(--booking-panel-h);
+  overflow: hidden;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background: $surface;
+}
+
+.portal-booking-slots__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 8px;
+  background: $surface-muted;
+  border-bottom: 1px solid $border-subtle;
+}
+
+.portal-booking-slots__tab {
+  margin: 0;
+  padding: 10px 8px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-btn;
+  background: $surface;
+  color: $text-muted;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-strong;
+    border-color: rgba($primary, 0.45);
+  }
+}
+
+.portal-booking-slots__tab--active {
+  color: $fice-teal-dark;
+  background: $secondary-2;
+  border-color: $primary;
+}
+
+.portal-booking-slots__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.portal-booking-day + .portal-booking-day {
+  margin-top: 16px;
+}
+
+.portal-booking-day__title {
+  margin-bottom: 8px;
+  color: $text-strong;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.portal-booking-period__slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.portal-booking-slot {
+  min-width: 96px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-btn;
+  background: $surface-muted;
+  color: $text-strong;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgba($primary, 0.45);
+  }
+}
+
+.portal-booking-slot--active {
+  border-color: $primary;
+  background: rgba($primary, 0.08);
+}
+
+.portal-booking-review {
+  display: flex;
+  flex-direction: column;
+  height: var(--booking-panel-h);
+  overflow: hidden;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background: $surface;
+}
+
+.portal-booking-review__summary {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
+}
+
+.portal-booking-review__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background: $surface-muted;
+}
+
+.portal-booking-review__icon {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: $primary;
+}
+
+.portal-booking-review__item-text {
+  min-width: 0;
+}
+
+.portal-booking-review__label {
+  color: $text-muted;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.portal-booking-review__value {
+  margin-top: 2px;
+  color: $text-strong;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.portal-booking-review__footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid $border-subtle;
+  background: $surface-muted;
+}
+
+.portal-booking-review__confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-btn;
+  background: $surface;
+  color: $text-strong;
+  text-align: left;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  cursor: pointer;
+
+  .q-icon {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: $primary;
+  }
+
+  &:hover {
+    border-color: rgba($primary, 0.45);
+  }
+}
+
+.portal-booking-review__confirm--active {
+  border-color: $primary;
+  background: rgba($primary, 0.08);
+  color: $fice-teal-dark;
+}
+
+.portal-booking-success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.portal-booking-success__title {
+  color: $text-strong;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.portal-booking-success__body {
+  margin: 0 0 8px;
+  color: $text-muted;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.portal-booking-success__meta {
+  margin: 0;
+  color: $text-strong;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.portal-consent-scroll {
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-consent-frame {
+  display: block;
+  width: 100%;
+  flex: 0 0 auto;
+  min-height: 200px;
+  border: 0;
+  background: $surface;
+}
+
+.portal-consent-sign {
+  flex: 0 0 auto;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid $border-subtle;
 }

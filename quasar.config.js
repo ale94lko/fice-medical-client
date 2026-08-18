@@ -17,6 +17,7 @@ function devApiProxy(target) {
   return {
     '/portal': { ...options },
     '/logout': { ...options },
+    '/telehealth': { ...options, ws: true },
   }
 }
 
@@ -43,6 +44,15 @@ export default defineConfig((ctx) => {
       },
       vueRouterMode: 'history',
       publicPath: 'fice-medical-client',
+      sassVariables: fileURLToPath(
+        new URL('./src/css/quasar.variables.scss', import.meta.url),
+      ),
+      extendViteConf(viteConf) {
+        viteConf.define = {
+          ...(viteConf.define || {}),
+          global: 'globalThis',
+        }
+      },
       vitePlugins: [
         ['@intlify/unplugin-vue-i18n/vite', {
           ssr: ctx.modeName === 'ssr',
@@ -50,7 +60,9 @@ export default defineConfig((ctx) => {
         }],
         ['vite-plugin-checker', {
           eslint: {
-            lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
+            lintCommand:
+              'eslint -c ./eslint.config.js '
+              + '"./src*/**/*.{js,mjs,cjs,vue}"',
             useFlatConfig: true,
           },
         }, { server: false }],

@@ -31,9 +31,26 @@ const routes = [
         component: () => import('pages/ForgotPasswordPage.vue'),
       },
       {
+        path: 'resend-verification',
+        name: 'ResendVerification',
+        component: () => import('pages/ResendVerificationPage.vue'),
+      },
+      {
         path: 'reset-password',
         name: 'ResetPassword',
         component: () => import('pages/ResetPasswordPage.vue'),
+      },
+    ],
+  },
+  {
+    path: '/select-location',
+    component: () => import('layouts/GuestLayout.vue'),
+    meta: { requiresAuth: true, locationPick: true },
+    children: [
+      {
+        path: '',
+        name: 'SelectLocation',
+        component: () => import('pages/SelectLocationPage.vue'),
       },
     ],
   },
@@ -55,8 +72,7 @@ const routes = [
       {
         path: 'appointments',
         name: 'Appointments',
-        component: () => import('pages/ComingSoonPage.vue'),
-        meta: { titleKey: 'appointments' },
+        component: () => import('pages/AppointmentsPage.vue'),
       },
       {
         path: 'documents',
@@ -67,7 +83,7 @@ const routes = [
       {
         path: 'consents',
         name: 'Consents',
-        component: () => import('pages/ComingSoonPage.vue'),
+        component: () => import('pages/ConsentsPage.vue'),
         meta: { titleKey: 'consents' },
       },
       {
@@ -89,6 +105,12 @@ const routes = [
         meta: { titleKey: 'security' },
       },
     ],
+  },
+  {
+    path: '/appointments/:id/telehealth',
+    name: 'PortalTelehealth',
+    meta: { requiresAuth: true },
+    component: () => import('pages/TelehealthMeetPage.vue'),
   },
   {
     path: '/:catchAll(.*)*',

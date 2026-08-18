@@ -47,8 +47,20 @@ export default defineRouter(function(/* { store, ssrContext } */) {
     }
     const needsAuth = to.matched.some(record => record.meta.requiresAuth)
     const isGuest = to.matched.some(record => record.meta.guest)
+    const isLocationPick = to.matched.some(
+      record => record.meta.locationPick,
+    )
     if (needsAuth && !authStore.isAuthenticated) {
       return { name: 'Login', query: { redirect: to.fullPath } }
+    }
+    if (authStore.isAuthenticated && authStore.needsLocationSelection) {
+      if (!isLocationPick) {
+        return { name: 'SelectLocation' }
+      }
+      return true
+    }
+    if (isLocationPick && authStore.isAuthenticated) {
+      return { name: 'Dashboard' }
     }
     if (isGuest && authStore.isAuthenticated && to.name === 'Login') {
       return { name: 'Dashboard' }

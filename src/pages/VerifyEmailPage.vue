@@ -1,16 +1,28 @@
 <template>
-  <div>
-    <div class="text-h5 text-weight-bold q-mb-lg">{{ t('verifyEmail') }}</div>
-    <p v-if="status === 'ok'" class="text-body1">
+  <div class="auth-form">
+    <div class="auth-form__title">{{ t('verifyEmail') }}</div>
+    <p v-if="status === 'ok'" class="auth-form__subtitle">
       {{ t('accountActivated') }}
     </p>
-    <p v-else-if="status === 'error'" class="text-body1 text-negative">
-      {{ t('invitationInvalid') }}
+    <p
+      v-else-if="status === 'error'"
+      class="auth-form__subtitle text-negative"
+    >
+      {{ t('verifyEmailInvalid') }}
     </p>
-    <p v-else class="text-body1">{{ t('submit') }}…</p>
-    <router-link class="text-primary text-caption" to="/login">
-      {{ t('backToLogin') }}
-    </router-link>
+    <p v-else class="auth-form__subtitle">{{ t('submit') }}…</p>
+    <div class="auth-form__links">
+      <router-link
+        v-if="status === 'error'"
+        class="auth-form__link"
+        to="/resend-verification"
+      >
+        {{ t('didntGetEmail') }}
+      </router-link>
+      <router-link class="auth-form__link" to="/login">
+        {{ t('backToLogin') }}
+      </router-link>
+    </div>
   </div>
 </template>
 

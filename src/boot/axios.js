@@ -34,6 +34,7 @@ function isAuthPath(url) {
   return path.includes('/portal/v1/auth/login')
     || path.includes('/portal/v1/auth/refresh')
     || path.includes('/portal/v1/auth/register')
+    || path.includes('/portal/v1/auth/locations')
 }
 
 api.interceptors.request.use(async(config) => {
@@ -45,6 +46,9 @@ api.interceptors.request.use(async(config) => {
   }
   if (config.data && !(config.data instanceof FormData)) {
     config.data = deepMapRequestKeysToSnakeCase(config.data)
+  }
+  if (config.params && typeof config.params === 'object') {
+    config.params = deepMapRequestKeysToSnakeCase(config.params)
   }
   try {
     const { useAuthStore } = await import('stores/auth-store.js')

@@ -1,64 +1,78 @@
 <template>
-  <div>
-    <div class="text-h5 text-weight-bold q-mb-lg">
-      {{ t('invitationTitle') }}
-    </div>
-    <p v-if="preview?.initials" class="text-body2 text-grey-7 q-mb-md">
+  <div class="auth-form">
+    <div class="auth-form__title">{{ t('invitationTitle') }}</div>
+    <p v-if="preview?.initials" class="auth-form__subtitle">
       {{ t('invitationFor', {
         initials: preview.initials,
         year: preview.birth_year,
       }) }}
     </p>
-    <q-banner v-if="invalid" class="bg-red-1 q-mb-md" rounded>
+    <p v-else class="auth-form__subtitle">
+      {{ t('signInSubtitle') }}
+    </p>
+    <q-banner
+      v-if="preview?.has_client_record && !invalid"
+      class="auth-form__banner bg-teal-1"
+      rounded
+      :data-testid="portalTestIds.inviteHasClientRecord"
+    >
+      {{ t('invitationHasClientRecord') }}
+    </q-banner>
+    <q-banner
+      v-if="invalid"
+      class="auth-form__banner bg-red-1"
+      rounded
+    >
       {{ t('invitationInvalid') }}
     </q-banner>
     <q-form v-else @submit.prevent="onSubmit">
-      <q-input
+      <LoginTextInput
         v-model="email"
         type="email"
-        outlined
-        dense
-        class="q-mb-md"
+        icon-left="mail"
         :label="t('email')"
-        data-testid="inviteEmail"
+        test-id="inviteEmail"
       />
-      <q-input
+      <LoginTextInput
         v-model="password"
         type="password"
-        outlined
-        dense
-        class="q-mb-md"
+        icon-left="lock"
         :label="t('password')"
         :hint="t('passwordRequirements')"
-        data-testid="invitePassword"
+        test-id="invitePassword"
       />
-      <q-input
+      <LoginTextInput
         v-model="confirmPassword"
         type="password"
-        outlined
-        dense
-        class="q-mb-md"
+        icon-left="lock"
         :label="t('confirmPassword')"
-        data-testid="inviteConfirmPassword"
+        test-id="inviteConfirmPassword"
       />
-      <q-input
+      <LoginTextInput
         v-model="dateOfBirth"
         type="date"
-        outlined
-        dense
-        class="q-mb-md"
+        icon-left="event"
         :label="t('dateOfBirth')"
-        data-testid="inviteDob"
+        test-id="inviteDob"
       />
-      <q-btn
-        type="submit"
-        color="primary"
-        class="full-width"
-        :label="t('acceptInvitation')"
-        :loading="loading"
-        data-testid="inviteSubmit"
-      />
+      <div class="auth-form__actions">
+        <q-btn
+          type="submit"
+          color="primary"
+          unelevated
+          no-caps
+          class="full-width auth-submit"
+          :label="t('acceptInvitation')"
+          :loading="loading"
+          data-testid="inviteSubmit"
+        />
+      </div>
     </q-form>
+    <div class="auth-form__links">
+      <router-link class="auth-form__link" to="/login">
+        {{ t('haveAccount') }}
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -68,6 +82,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Notify } from 'quasar'
 import { api } from 'boot/axios'
+import LoginTextInput from 'src/components/LoginTextInput.vue'
+import { portalTestIds } from 'src/test-ids/index.js'
 import { portalPaths, unwrapData } from 'src/utils/portal-api.js'
 import { useAuthStore } from 'stores/auth-store.js'
 

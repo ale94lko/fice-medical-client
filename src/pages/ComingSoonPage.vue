@@ -1,11 +1,17 @@
 <template>
   <div>
-    <div class="text-h5 text-weight-bold q-mb-md">{{ title }}</div>
-    <q-card>
-      <q-card-section>
-        <div class="text-subtitle1">{{ t('comingSoon') }}</div>
+    <h1 class="portal-page__title">{{ title }}</h1>
+    <p class="portal-page__lead">{{ t('comingSoonBody') }}</p>
+    <q-card class="portal-card">
+      <q-card-section class="portal-empty">
+        <div class="portal-empty__icon" aria-hidden="true">
+          <q-icon name="hourglass_empty" size="22px" />
+        </div>
+        <div class="text-subtitle1 text-weight-medium">
+          {{ t('comingSoon') }}
+        </div>
         <p class="text-body2 text-grey-7 q-mb-none">
-          {{ t('comingSoonBody') }}
+          {{ t('comingSoonHint') }}
         </p>
       </q-card-section>
     </q-card>

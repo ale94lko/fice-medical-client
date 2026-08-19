@@ -1,0 +1,1 @@
+import{S as e}from"./vue-i18n.runtime-CGljzWu4.js";function t(){return e(`_q_`)}export{t};

@@ -41,6 +41,10 @@
           :items="requestItems"
           :empty-text="t('openRequestsEmpty')"
           :test-id="portalTestIds.dashboardRequests"
+          view-more-to="/appointments"
+          :view-more-test-id="portalTestIds.dashboardViewMore(
+            'requests',
+          )"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -51,6 +55,10 @@
           :items="appointmentItems"
           :empty-text="t('noUpcomingAppointments')"
           :test-id="portalTestIds.dashboardScheduled"
+          view-more-to="/appointments"
+          :view-more-test-id="portalTestIds.dashboardViewMore(
+            'scheduled',
+          )"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -61,6 +69,10 @@
           :items="consentItems"
           :empty-text="t('dashboardConsentsEmpty')"
           :test-id="portalTestIds.dashboardConsents"
+          view-more-to="/consents"
+          :view-more-test-id="portalTestIds.dashboardViewMore(
+            'consents',
+          )"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -71,6 +83,10 @@
           :items="documentItems"
           :empty-text="t('dashboardDocumentsEmpty')"
           :test-id="portalTestIds.dashboardDocuments"
+          view-more-to="/documents"
+          :view-more-test-id="portalTestIds.dashboardViewMore(
+            'documents',
+          )"
         />
       </div>
     </div>
@@ -90,6 +106,10 @@ import {
   formatPortalDateTime,
   formatPortalTime,
 } from 'src/utils/portal-datetime.js'
+import { toPortalPlaceFields }
+  from 'src/utils/portal-place-of-service.js'
+import { toPortalJoinFields }
+  from 'src/utils/portal-telehealth-join.js'
 import { useAuthStore } from 'stores/auth-store.js'
 
 const { t } = useI18n()
@@ -106,8 +126,10 @@ const requestItems = computed(() =>
   (dashboard.value?.pending_requests || []).map((item) => ({
     key: `request-${item.id}`,
     chip: t('requestStatusPending'),
-    title: formatPortalDate(item.preferred_start_at_utc)
-      || t('timeToBeConfirmed'),
+    ...splitWhen(
+      item.preferred_start_at_utc,
+      t('timeToBeConfirmed'),
+    ),
     meta: requestMeta(item),
   })),
 )
@@ -115,16 +137,14 @@ const requestItems = computed(() =>
 const appointmentItems = computed(() =>
   (dashboard.value?.scheduled_appointments || []).map((item) => ({
     key: `appt-${item.appointment_id}`,
-    title: formatPortalDateTime(item.start_at_utc),
+    ...splitWhen(item.start_at_utc),
     meta: appointmentMeta(item),
-    to: item.can_join_telehealth
-      ? {
-        name: 'PortalTelehealth',
-        params: { id: item.appointment_id },
-      }
-      : null,
-    actionLabel: t('telehealthJoinVisit'),
-    testId: portalTestIds.dashboardJoin(item.appointment_id),
+    ...toPortalPlaceFields(item, t),
+    ...toPortalJoinFields(
+      item,
+      t,
+      portalTestIds.dashboardJoin(item.appointment_id),
+    ),
   })),
 )
 
@@ -153,24 +173,20 @@ onMounted(async() => {
   dashboard.value = unwrapData(data)
 })
 
-function requestMeta(item) {
-  const time = requestTime(item)
-  return [time, item.service_name, item.notes]
-    .filter(Boolean)
-    .join(' · ')
+function splitWhen(value, fallback = '') {
+  const date = formatPortalDate(value)
+  const time = formatPortalTime(value)
+
+  return {
+    title: date || fallback,
+    time: date ? time : '',
+  }
 }
 
-function requestTime(item) {
-  const start = formatPortalTime(item.preferred_start_at_utc)
-  if (!start) {
-    return ''
-  }
-  const end = formatPortalTime(item.preferred_end_at_utc)
-  if (end && end !== start) {
-    return `${start} – ${end}`
-  }
-
-  return start
+function requestMeta(item) {
+  return [item.service_name, item.notes]
+    .filter(Boolean)
+    .join(' · ')
 }
 
 function appointmentMeta(item) {

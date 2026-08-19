@@ -60,6 +60,13 @@ export const portalPaths = {
   consent: (id) => `/portal/v1/consents/${id}`,
   consentSign: (id) => `/portal/v1/consents/${id}/sign`,
   consentDecline: (id) => `/portal/v1/consents/${id}/decline`,
+  messagesConversation: '/portal/v1/messages/conversation',
+  messagesUnreadCount: '/portal/v1/messages/unread-count',
+  messagesList: '/portal/v1/messages/conversation/messages',
+  messagesSend: '/portal/v1/messages/conversation/messages',
+  messagesFiles: '/portal/v1/messages/conversation/files',
+  messagesRead: '/portal/v1/messages/conversation/read',
+  messagesFile: (id) => `/portal/v1/messages/files/${id}`,
 }
 
 export function unwrapData(body) {

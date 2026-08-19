@@ -14,6 +14,26 @@ export default {
   dateOfBirth: 'Date of birth',
   submit: 'Continue',
   logout: 'Sign out',
+  sessionExpiredRelogin:
+    'Your session has expired, please sign in again',
+  sessionExpiryTitle: 'Session Expiring Soon',
+  sessionExpiryInactiveMessage:
+    'You have been inactive for more than 30 minutes.',
+  sessionExpiryAutoCloseMessage:
+    'This section will automatically close due to inactivity.',
+  sessionExpiryCountdownLabel: 'This section will close in:',
+  sessionExpiryCloseSection: 'Close Section',
+  sessionExpiryKeepOpen: 'Keep Section Open',
+  sessionExpirySecureFooter:
+    'Your session will remain secure until it expires.',
+  timezoneMismatchTitle: 'Different timezones',
+  timezoneMismatchLead:
+    'Your device and this clinic do not use the same timezone.',
+  timezoneMismatchDeviceLabel: 'This device',
+  timezoneMismatchClinicLabel: 'Clinic timezone',
+  timezoneMismatchInUse: 'In use',
+  timezoneMismatchSessionHint:
+    'Click a timezone to show it. The page reloads.',
   dashboard: 'Dashboard',
   profile: 'Profile',
   appointments: 'Appointments',
@@ -21,6 +41,8 @@ export default {
   consents: 'Consents',
   forms: 'Forms',
   messages: 'Messages',
+  messagesChatTooltip: 'Chat with your clinic',
+  messagesRefresh: 'Refresh',
   security: 'Security',
   invitation: 'Invitation',
   resetPassword: 'Reset password',
@@ -75,6 +97,7 @@ export default {
     'Files your clinic has shared with you.',
   dashboardConsentsEmpty: 'You have no consents to sign.',
   dashboardDocumentsEmpty: 'You have no documents yet.',
+  dashboardViewMore: 'View more',
   consentToSign: 'To sign',
   profileLead: 'The information your clinic uses to recognize you.',
   profileIdentityHint:
@@ -176,6 +199,23 @@ export default {
   waitingForClientChart:
     'Your clinic is creating your client chart. '
     + 'You can request a visit in the meantime.',
+  messagesLead:
+    'Send a secure message to your clinic.',
+  messagesNeedChart:
+    'Messages are available after the clinic links your chart.',
+  messagesEmpty: 'No messages yet.',
+  messagesEmptyHint:
+    'Write below and your clinic can reply in this thread.',
+  messagesToday: 'Today',
+  messagesYesterday: 'Yesterday',
+  messagesSending: 'Sending...',
+  messagesPlaceholder: 'Write a message',
+  messagesSend: 'Send',
+  messagesAttach: 'Attach a file',
+  messagesYou: 'You',
+  messagesClinic: 'The clinic',
+  messagesClinicWithStaff: '{clinic} · {name}',
+  messagesAttachment: 'Attachment',
   cancel: 'Cancel',
   close: 'Close',
   sendRequest: 'Send request',
@@ -191,6 +231,8 @@ export default {
   noAvailability: 'No open times in the next two weeks.',
   appointmentBooked: 'Your visit is booked.',
   upcomingAppointments: 'Upcoming visits',
+  upcomingAppointmentsHint:
+    'Visits the clinic has confirmed for you.',
   noUpcomingAppointments: 'You have no upcoming visits.',
   pendingRequests: 'Open requests',
   openRequestsHint:
@@ -198,6 +240,21 @@ export default {
   openRequestsEmpty: 'You have no open requests.',
   requestStatusPending: 'Pending',
   pastAppointments: 'Past visits',
+  pastAppointmentsHint:
+    'Earlier visits, including cancelled or missed ones.',
+  noPastAppointments: 'You have no past visits.',
+  appointmentStatusScheduled: 'Scheduled',
+  appointmentStatusConfirmed: 'Confirmed',
+  appointmentStatusCheckedIn: 'Checked in',
+  appointmentStatusInProgress: 'In progress',
+  appointmentStatusCompleted: 'Completed',
+  appointmentStatusCancelled: 'Cancelled',
+  appointmentStatusNoShow: 'No show',
+  appointmentStatusRescheduled: 'Rescheduled',
+  placeOfServiceOffice: 'Office',
+  placeOfServiceTelehealth: 'Telehealth',
+  placeOfServiceHome: 'Home',
+  placeOfServiceSchool: 'School',
   cancelAppointment: 'Cancel',
   cancelRequest: 'Cancel request',
   timeToBeConfirmed: 'Time to be confirmed',
@@ -287,6 +344,8 @@ export default {
   appointmentDetailNumberLabel: 'Appointment',
   appointmentDetailServicesLabel: 'Services',
   telehealthJoinVisit: 'Join visit',
+  telehealthJoinWhenReady:
+    'You can join 15 minutes before the visit starts.',
   telehealthBackToAppointments: 'Back to appointments',
   telehealthSessionNotReady:
     'This telehealth visit is not ready yet. '

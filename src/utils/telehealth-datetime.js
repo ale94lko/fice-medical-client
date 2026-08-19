@@ -1,14 +1,12 @@
-export function resolveBrowserTimeZone() {
-  try {
-    // eslint-disable-next-line new-cap
-    return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
-  } catch {
-    return 'UTC'
-  }
-}
+import {
+  resolveActiveDisplayTimeZone,
+  resolveBrowserTimeZone,
+} from 'src/utils/portal-datetime-config.js'
+
+export { resolveBrowserTimeZone }
 
 export function resolveTenantTimeZone() {
-  return resolveBrowserTimeZone()
+  return resolveActiveDisplayTimeZone()
 }
 
 function parseUtcDate(iso) {
@@ -21,7 +19,7 @@ function parseUtcDate(iso) {
   return Number.isNaN(date.getTime()) ? null : date
 }
 
-export function formatUtcDateLong(iso, timeZone = resolveBrowserTimeZone()) {
+export function formatUtcDateLong(iso, timeZone = resolveTenantTimeZone()) {
   const date = parseUtcDate(iso)
   if (!date) {
     return ''
@@ -35,7 +33,7 @@ export function formatUtcDateLong(iso, timeZone = resolveBrowserTimeZone()) {
   }).format(date)
 }
 
-export function formatUtcTime(iso, timeZone = resolveBrowserTimeZone()) {
+export function formatUtcTime(iso, timeZone = resolveTenantTimeZone()) {
   const date = parseUtcDate(iso)
   if (!date) {
     return ''
@@ -52,7 +50,7 @@ export function formatUtcTime(iso, timeZone = resolveBrowserTimeZone()) {
 export function formatUtcTimeRange(
   startIso,
   endIso,
-  timeZone = resolveBrowserTimeZone(),
+  timeZone = resolveTenantTimeZone(),
 ) {
   const start = formatUtcTime(startIso, timeZone)
   const end = formatUtcTime(endIso, timeZone)

@@ -14,6 +14,26 @@ export default {
   dateOfBirth: 'Fecha de nacimiento',
   submit: 'Continuar',
   logout: 'Cerrar sesión',
+  sessionExpiredRelogin:
+    'La sesión expiró, por favor inicia sesión de nuevo',
+  sessionExpiryTitle: 'La sesión expirará pronto',
+  sessionExpiryInactiveMessage:
+    'Has estado inactivo durante más de 30 minutos.',
+  sessionExpiryAutoCloseMessage:
+    'Esta sección se cerrará automáticamente por inactividad.',
+  sessionExpiryCountdownLabel: 'Esta sección se cerrará en:',
+  sessionExpiryCloseSection: 'Cerrar sección',
+  sessionExpiryKeepOpen: 'Mantener sección abierta',
+  sessionExpirySecureFooter:
+    'Tu sesión permanecerá segura hasta que expire.',
+  timezoneMismatchTitle: 'Zonas horarias distintas',
+  timezoneMismatchLead:
+    'Este dispositivo y la clínica no usan la misma zona horaria.',
+  timezoneMismatchDeviceLabel: 'Este dispositivo',
+  timezoneMismatchClinicLabel: 'Zona de la clínica',
+  timezoneMismatchInUse: 'En uso',
+  timezoneMismatchSessionHint:
+    'Pulse una zona para mostrarla. La página se recarga.',
   dashboard: 'Inicio',
   profile: 'Perfil',
   appointments: 'Citas',
@@ -21,6 +41,8 @@ export default {
   consents: 'Consentimientos',
   forms: 'Formularios',
   messages: 'Mensajes',
+  messagesChatTooltip: 'Chatea con tu clínica',
+  messagesRefresh: 'Recargar',
   security: 'Seguridad',
   invitation: 'Invitación',
   resetPassword: 'Restablecer contraseña',
@@ -75,6 +97,7 @@ export default {
     'Archivos que tu clínica ha compartido contigo.',
   dashboardConsentsEmpty: 'No tienes consentimientos por firmar.',
   dashboardDocumentsEmpty: 'Todavía no tienes documentos.',
+  dashboardViewMore: 'Ver más',
   consentToSign: 'Por firmar',
   profileLead: 'La información que usa tu clínica para reconocerte.',
   profileIdentityHint:
@@ -180,6 +203,24 @@ export default {
   waitingForClientChart:
     'Tu clínica está creando tu ficha de cliente. '
     + 'Mientras tanto puedes solicitar una visita.',
+  messagesLead:
+    'Envía un mensaje seguro a tu clínica.',
+  messagesNeedChart:
+    'Los mensajes están disponibles cuando la clínica '
+    + 'vincule tu ficha.',
+  messagesEmpty: 'Aún no hay mensajes.',
+  messagesEmptyHint:
+    'Escribe abajo y tu clínica puede responder en este hilo.',
+  messagesToday: 'Hoy',
+  messagesYesterday: 'Ayer',
+  messagesSending: 'Enviando...',
+  messagesPlaceholder: 'Escribe un mensaje',
+  messagesSend: 'Enviar',
+  messagesAttach: 'Adjuntar un archivo',
+  messagesYou: 'Tú',
+  messagesClinic: 'La clínica',
+  messagesClinicWithStaff: '{clinic} · {name}',
+  messagesAttachment: 'Archivo',
   cancel: 'Cancelar',
   close: 'Cerrar',
   sendRequest: 'Enviar solicitud',
@@ -195,6 +236,8 @@ export default {
   noAvailability: 'No hay horarios en las próximas dos semanas.',
   appointmentBooked: 'Tu visita quedó reservada.',
   upcomingAppointments: 'Próximas visitas',
+  upcomingAppointmentsHint:
+    'Visitas que la clínica ya te confirmó.',
   noUpcomingAppointments: 'No tienes visitas próximas.',
   pendingRequests: 'Solicitudes abiertas',
   openRequestsHint:
@@ -202,6 +245,21 @@ export default {
   openRequestsEmpty: 'No tienes solicitudes abiertas.',
   requestStatusPending: 'Pendiente',
   pastAppointments: 'Visitas anteriores',
+  pastAppointmentsHint:
+    'Visitas anteriores, incluidas las canceladas o no asistidas.',
+  noPastAppointments: 'No tienes visitas anteriores.',
+  appointmentStatusScheduled: 'Programada',
+  appointmentStatusConfirmed: 'Confirmada',
+  appointmentStatusCheckedIn: 'En recepción',
+  appointmentStatusInProgress: 'En curso',
+  appointmentStatusCompleted: 'Completada',
+  appointmentStatusCancelled: 'Cancelada',
+  appointmentStatusNoShow: 'No asistió',
+  appointmentStatusRescheduled: 'Reprogramada',
+  placeOfServiceOffice: 'Consultorio',
+  placeOfServiceTelehealth: 'Telemedicina',
+  placeOfServiceHome: 'Domicilio',
+  placeOfServiceSchool: 'Escuela',
   cancelAppointment: 'Cancelar',
   cancelRequest: 'Cancelar solicitud',
   timeToBeConfirmed: 'Horario por confirmar',
@@ -294,6 +352,8 @@ export default {
   appointmentDetailNumberLabel: 'Cita',
   appointmentDetailServicesLabel: 'Servicios',
   telehealthJoinVisit: 'Unirse a la visita',
+  telehealthJoinWhenReady:
+    'Puedes unirte 15 minutos antes de que empiece la visita.',
   telehealthBackToAppointments: 'Volver a citas',
   telehealthSessionNotReady:
     'Esta visita de telehealth aún no está lista. '

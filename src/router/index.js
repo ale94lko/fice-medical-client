@@ -7,6 +7,8 @@ import {
 } from 'vue-router'
 import routes from './routes'
 import { useAuthStore } from 'stores/auth-store.js'
+import { clearSharedSessionInactivityState } from
+  'src/utils/session-inactivity-sync.js'
 import {
   isStaleChunkLoadError,
   parseGithubPagesStoredRedirect,
@@ -27,6 +29,9 @@ export default defineRouter(function(/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
+  const authStore = useAuthStore()
+  authStore.router = Router
+
   let githubPagesRedirectHandled = false
 
   Router.beforeEach(async(to) => {
@@ -41,7 +46,6 @@ export default defineRouter(function(/* { store, ssrContext } */) {
       }
     }
 
-    const authStore = useAuthStore()
     if (!authStore.accessToken) {
       await authStore.restoreSession()
     }
@@ -51,7 +55,11 @@ export default defineRouter(function(/* { store, ssrContext } */) {
       record => record.meta.locationPick,
     )
     if (needsAuth && !authStore.isAuthenticated) {
+      clearSharedSessionInactivityState()
       return { name: 'Login', query: { redirect: to.fullPath } }
+    }
+    if (to.name === 'Login') {
+      clearSharedSessionInactivityState()
     }
     if (authStore.isAuthenticated && authStore.needsLocationSelection) {
       if (!isLocationPick) {

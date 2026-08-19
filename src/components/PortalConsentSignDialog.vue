@@ -2,6 +2,7 @@
   <q-dialog
     :model-value="modelValue"
     persistent
+    full-width
     content-class="portal-consent-dialog"
     transition-show="scale"
     transition-hide="scale"

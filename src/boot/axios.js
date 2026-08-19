@@ -1,6 +1,7 @@
 import { defineBoot } from '#q-app/wrappers'
 import axios from 'axios'
 import { Notify } from 'quasar'
+import { i18nGlobalT } from 'boot/i18n'
 import { resolveTenantDomainFromHost } from 'src/utils/tenant-from-host.js'
 import { deepMapRequestKeysToSnakeCase } from 'src/utils/request-key-case.js'
 
@@ -28,6 +29,7 @@ const api = axios.create({
 })
 
 let refreshInFlight = null
+let lastSessionExpiredNotifyAt = 0
 
 function isAuthPath(url) {
   const path = String(url ?? '')
@@ -35,6 +37,50 @@ function isAuthPath(url) {
     || path.includes('/portal/v1/auth/refresh')
     || path.includes('/portal/v1/auth/register')
     || path.includes('/portal/v1/auth/locations')
+}
+
+async function redirectToLogin() {
+  try {
+    const { useAuthStore } = await import('stores/auth-store.js')
+    const router = useAuthStore().router
+    if (router && typeof router.replace === 'function') {
+      await router.replace({ name: 'Login' }).catch(() => {})
+    }
+  } catch {
+    // Router may not be mounted yet
+  }
+}
+
+export async function clearSessionAndRedirectToLogin() {
+  const now = Date.now()
+  if (now - lastSessionExpiredNotifyAt > 600) {
+    lastSessionExpiredNotifyAt = now
+    Notify.create({
+      type: 'negative',
+      message: i18nGlobalT('sessionExpiredRelogin'),
+      position: 'top',
+      timeout: 6000,
+    })
+  }
+  try {
+    const { useAuthStore } = await import('stores/auth-store.js')
+    useAuthStore().clearSession()
+  } catch {
+    // Pinia may be unavailable during very early boot
+  }
+  await redirectToLogin()
+}
+
+export async function refreshAccessToken() {
+  const { useAuthStore } = await import('stores/auth-store.js')
+  const store = useAuthStore()
+  if (!refreshInFlight) {
+    refreshInFlight = store.refreshSession().finally(() => {
+      refreshInFlight = null
+    })
+  }
+  await refreshInFlight
+  return store.accessToken
 }
 
 api.interceptors.request.use(async(config) => {
@@ -74,20 +120,12 @@ api.interceptors.response.use(
     if (canRefresh) {
       original._retry = true
       try {
-        const { useAuthStore } = await import('stores/auth-store.js')
-        const store = useAuthStore()
-        if (!refreshInFlight) {
-          refreshInFlight = store.refreshSession().finally(() => {
-            refreshInFlight = null
-          })
-        }
-        await refreshInFlight
+        const token = await refreshAccessToken()
         original.headers = original.headers ?? {}
-        original.headers.Authorization = `Bearer ${store.accessToken}`
+        original.headers.Authorization = `Bearer ${token}`
         return api(original)
       } catch {
-        const { useAuthStore } = await import('stores/auth-store.js')
-        await useAuthStore().clearSession()
+        await clearSessionAndRedirectToLogin()
       }
     }
     const message = error.response?.data?.message

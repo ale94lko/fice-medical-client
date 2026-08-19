@@ -6,6 +6,25 @@ import {
   readRefreshToken,
   writeRefreshToken,
 } from 'src/utils/session-storage.js'
+import {
+  setPortalDateTimeConfig,
+} from 'src/utils/portal-datetime-config.js'
+import {
+  bumpDisplayTimezoneTick,
+  clearSessionDisplayTimezone,
+} from 'src/composables/useSessionDisplayTimezone.js'
+import {
+  beginFreshSessionInactivityClock,
+  clearSharedSessionInactivityState,
+} from 'src/utils/session-inactivity-sync.js'
+
+function applyConfigData(payload) {
+  const cfg = payload?.config_data ?? payload?.configData
+  if (cfg && typeof cfg === 'object') {
+    setPortalDateTimeConfig(cfg)
+    bumpDisplayTimezoneTick()
+  }
+}
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -52,10 +71,15 @@ export const useAuthStore = defineStore('auth', {
       if (typeof data?.needs_location_selection === 'boolean') {
         this.needsLocationSelection = data.needs_location_selection
       }
+      applyConfigData(data)
     },
     async login(email, password) {
-      const { data } = await api.post(portalPaths.login, { email, password })
+      const { data } = await api.post(portalPaths.login, {
+        email,
+        password,
+      })
       this.applyAuthPayload(data)
+      beginFreshSessionInactivityClock()
       if (!this.needsLocationSelection) {
         await this.loadMe()
       }
@@ -75,6 +99,7 @@ export const useAuthStore = defineStore('auth', {
       )
       this.applyAuthPayload(data)
       this.needsLocationSelection = false
+      beginFreshSessionInactivityClock()
       await this.loadMe()
     },
     async selectLocation(accountId) {
@@ -83,6 +108,7 @@ export const useAuthStore = defineStore('auth', {
       })
       this.applyAuthPayload(data)
       this.needsLocationSelection = false
+      beginFreshSessionInactivityClock()
       await this.loadMe()
     },
     async loadLocations() {
@@ -97,6 +123,7 @@ export const useAuthStore = defineStore('auth', {
       if (Array.isArray(this.me?.locations)) {
         this.locations = this.me.locations
       }
+      applyConfigData(this.me)
     },
     async refreshSession() {
       const token = this.refreshToken || readRefreshToken()
@@ -122,6 +149,7 @@ export const useAuthStore = defineStore('auth', {
         await this.refreshSession()
         await this.loadMe()
         this.needsLocationSelection = false
+        beginFreshSessionInactivityClock()
         return true
       } catch {
         this.clearSession()
@@ -130,7 +158,7 @@ export const useAuthStore = defineStore('auth', {
         this.restoring = false
       }
     },
-    async logout() {
+    async logout(router) {
       try {
         if (this.accessToken) {
           await api.post(portalPaths.logout)
@@ -139,6 +167,9 @@ export const useAuthStore = defineStore('auth', {
         // Best-effort server revoke
       }
       this.clearSession()
+      if (router && typeof router.replace === 'function') {
+        await router.replace({ name: 'Login' }).catch(() => {})
+      }
     },
     clearSession() {
       this.accessToken = null
@@ -147,6 +178,9 @@ export const useAuthStore = defineStore('auth', {
       this.locations = []
       this.needsLocationSelection = false
       clearRefreshToken()
+      setPortalDateTimeConfig(null)
+      clearSessionDisplayTimezone()
+      clearSharedSessionInactivityState()
     },
   },
 })

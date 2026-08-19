@@ -1,50 +1,20 @@
-function parsePortalDate(value) {
-  if (!value) {
-    return null
-  }
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) {
-    return null
-  }
-
-  return date
-}
+import {
+  formatDate,
+  formatDateTime,
+  formatTime,
+  toUtc,
+} from 'src/utils/portal-datetime-config.js'
 
 export function formatPortalDateTime(value) {
-  const date = parsePortalDate(value)
-  if (!date) {
-    return value ? String(value) : ''
-  }
-
-  return date.toLocaleString(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  })
+  return formatDateTime(value) || (value ? String(value) : '')
 }
 
 export function formatPortalDate(value) {
-  const date = parsePortalDate(value)
-  if (!date) {
-    return ''
-  }
-
-  return date.toLocaleDateString(undefined, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  return formatDate(value)
 }
 
 export function formatPortalTime(value) {
-  const date = parsePortalDate(value)
-  if (!date) {
-    return ''
-  }
-
-  return date.toLocaleTimeString(undefined, {
-    timeStyle: 'short',
-  })
+  return formatTime(value)
 }
 
 export function toLocalDateTimeInput(value) {
@@ -364,7 +334,8 @@ export function preferredDateTimeToIso(dateStr, timeStr) {
     return null
   }
   const time = parseTime12h(timeStr) || { hours: 6, minutes: 0 }
-  date.setHours(time.hours, time.minutes, 0, 0)
+  const hh = String(time.hours).padStart(2, '0')
+  const mm = String(time.minutes).padStart(2, '0')
 
-  return date.toISOString()
+  return toUtc(date, `${hh}:${mm}`) || null
 }

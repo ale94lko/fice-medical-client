@@ -94,9 +94,7 @@ const routes = [
       },
       {
         path: 'messages',
-        name: 'Messages',
-        component: () => import('pages/ComingSoonPage.vue'),
-        meta: { titleKey: 'messages' },
+        redirect: { name: 'Dashboard' },
       },
       {
         path: 'security',

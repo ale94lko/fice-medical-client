@@ -121,6 +121,7 @@
       @back-meet="goAppointments"
       @back-calendar="goAppointments"
     />
+    <PortalSessionExpiryHost />
   </div>
 </template>
 
@@ -154,6 +155,8 @@ import TelehealthInCall from
   'src/components/telehealth/TelehealthInCall.vue'
 import TelehealthEnded from
   'src/components/telehealth/TelehealthEnded.vue'
+import PortalSessionExpiryHost from
+  'src/components/PortalSessionExpiryHost.vue'
 
 const { t } = useI18n()
 const route = useRoute()

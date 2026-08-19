@@ -11,18 +11,20 @@
           :aria-label="t('menu')"
           @click="drawer = !drawer"
         />
-        <div class="portal-brand">
+        <div
+          class="portal-brand"
+          :aria-label="t('appName')"
+        >
           <q-img
             class="portal-brand__logo"
-            src="logo.png"
+            src="test.png"
+            fit="contain"
             spinner-color="primary"
           />
-          <div class="portal-brand__name ellipsis">
-            {{ t('appName') }}
-          </div>
         </div>
         <q-space />
         <div class="portal-header__actions">
+          <TimezoneMismatchBanner />
           <q-btn-dropdown
             v-if="authStore.hasMultipleLocations"
             flat
@@ -181,6 +183,8 @@
         </div>
       </q-page>
     </q-page-container>
+    <PortalChatWidget />
+    <PortalSessionExpiryHost />
   </q-layout>
 </template>
 
@@ -190,6 +194,12 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'stores/auth-store.js'
 import { portalTestIds } from 'src/test-ids/index.js'
+import PortalChatWidget from
+  'src/components/PortalChatWidget.vue'
+import TimezoneMismatchBanner from
+  'src/components/TimezoneMismatchBanner.vue'
+import PortalSessionExpiryHost from
+  'src/components/PortalSessionExpiryHost.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -216,7 +226,7 @@ const userInitials = computed(() => {
   return `${first}${last}`.toUpperCase()
 })
 
-const navItems = [
+const navItems = computed(() => [
   {
     to: '/dashboard',
     icon: 'home',
@@ -248,12 +258,6 @@ const navItems = [
     testId: 'navForms',
   },
   {
-    to: '/messages',
-    icon: 'chat',
-    labelKey: 'messages',
-    testId: 'navMessages',
-  },
-  {
     to: '/profile',
     icon: 'person',
     labelKey: 'profile',
@@ -265,7 +269,7 @@ const navItems = [
     labelKey: 'security',
     testId: 'navSecurity',
   },
-]
+])
 
 function setLocale(value) {
   locale.value = value
@@ -273,8 +277,7 @@ function setLocale(value) {
 }
 
 async function onLogout() {
-  await authStore.logout()
-  await router.replace({ name: 'Login' })
+  await authStore.logout(router)
 }
 
 async function onSwitchLocation(accountId) {

@@ -1,0 +1,1 @@
+import{Q as e,k as t}from"./vue-i18n.runtime-CWKJvU4x.js";import{f as n}from"./nodes-nb8YhiwH.js";function r(){let r=e(!n.value);return r.value||t(()=>{r.value=!0}),{isHydrated:r}}export{r as t};

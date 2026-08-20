@@ -1,0 +1,1 @@
+import{Q as e}from"./vue-i18n.runtime-CWKJvU4x.js";var t=e(!1);function n(){function e(){t.value=!0}function n(){t.value=!1}return{open:t,openChat:e,closeChat:n}}export{n as t};

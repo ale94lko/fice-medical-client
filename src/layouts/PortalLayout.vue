@@ -30,18 +30,19 @@
             flat
             dense
             no-caps
-            class="portal-header-pill
-              portal-header-pill--interactive"
+            class="portal-header-user"
+            dropdown-icon="arrow_drop_down"
             :aria-label="t('switchLocation')"
             :data-testid="portalTestIds.headerLocationSwitch"
           >
             <template #label>
-              <q-icon
-                name="location_on"
-                size="18px"
-                class="portal-header-pill__icon"
-              />
-              <span class="portal-header-pill__text">
+              <span
+                class="portal-header-avatar"
+                aria-hidden="true"
+              >
+                <q-icon name="location_on" size="16px" />
+              </span>
+              <span class="portal-header-user__name gt-xs">
                 {{ authStore.currentLocationName }}
               </span>
             </template>
@@ -64,14 +65,15 @@
           </q-btn-dropdown>
           <div
             v-else-if="authStore.currentLocationName"
-            class="portal-header-pill"
+            class="portal-header-clinic"
           >
-            <q-icon
-              name="location_on"
-              size="18px"
-              class="portal-header-pill__icon"
-            />
-            <span class="portal-header-pill__text">
+            <span
+              class="portal-header-avatar"
+              aria-hidden="true"
+            >
+              <q-icon name="location_on" size="16px" />
+            </span>
+            <span class="portal-header-user__name">
               {{ authStore.currentLocationName }}
             </span>
           </div>
@@ -79,12 +81,20 @@
             flat
             dense
             no-caps
-            class="portal-header-locale"
+            class="portal-header-user"
+            dropdown-icon="arrow_drop_down"
             :data-testid="portalTestIds.headerLocaleSwitch"
           >
             <template #label>
-              <q-icon name="translate" size="18px" />
-              <span class="gt-xs">{{ localeLabel }}</span>
+              <span
+                class="portal-header-avatar"
+                aria-hidden="true"
+              >
+                <q-icon name="public" size="16px" />
+              </span>
+              <span class="portal-header-user__name gt-xs">
+                {{ localeLabel }}
+              </span>
             </template>
             <q-list>
               <q-item
@@ -103,6 +113,24 @@
               </q-item>
             </q-list>
           </q-btn-dropdown>
+          <q-btn
+            flat
+            round
+            dense
+            class="portal-header-bell"
+            icon="notifications"
+            :aria-label="t('messages')"
+            :data-testid="portalTestIds.headerNotifications"
+            @click="openChat"
+          >
+            <q-badge
+              v-if="unreadCount"
+              floating
+              rounded
+              color="negative"
+              :label="unreadCount"
+            />
+          </q-btn>
           <q-btn-dropdown
             flat
             dense
@@ -159,22 +187,42 @@
       class="portal-drawer"
       :width="248"
     >
-      <q-list padding>
-        <q-item
-          v-for="item in navItems"
-          :key="item.to"
-          clickable
-          v-ripple
-          class="portal-nav-item"
-          :to="item.to"
-          :data-testid="item.testId"
-        >
-          <q-item-section avatar>
-            <q-icon :name="item.icon" />
-          </q-item-section>
-          <q-item-section>{{ t(item.labelKey) }}</q-item-section>
-        </q-item>
-      </q-list>
+      <div class="portal-drawer__inner">
+        <q-list class="portal-drawer__nav" padding>
+          <q-item
+            v-for="item in navItems"
+            :key="item.to"
+            clickable
+            v-ripple
+            class="portal-nav-item"
+            :to="item.to"
+            :data-testid="item.testId"
+          >
+            <q-item-section avatar>
+              <q-icon :name="item.icon" />
+            </q-item-section>
+            <q-item-section>{{ t(item.labelKey) }}</q-item-section>
+          </q-item>
+        </q-list>
+        <div class="portal-drawer__footer">
+          <div class="portal-help">
+            <p class="portal-help__title">{{ t('needHelp') }}</p>
+            <q-btn
+              unelevated
+              no-caps
+              color="primary"
+              class="portal-help__btn"
+              icon="headset_mic"
+              :label="t('contactSupport')"
+              :data-testid="portalTestIds.headerContactSupport"
+              @click="openChat"
+            />
+          </div>
+          <p class="portal-copyright">
+            {{ t('portalCopyright', { year: copyrightYear }) }}
+          </p>
+        </div>
+      </div>
     </q-drawer>
     <q-page-container>
       <q-page class="portal-page">
@@ -194,6 +242,10 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from 'stores/auth-store.js'
 import { portalTestIds } from 'src/test-ids/index.js'
+import { usePortalChatPanel } from
+  'src/composables/usePortalChatPanel.js'
+import { usePortalMessageUnread } from
+  'src/composables/usePortalMessageUnread.js'
 import PortalChatWidget from
   'src/components/PortalChatWidget.vue'
 import TimezoneMismatchBanner from
@@ -205,6 +257,9 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 const drawer = ref(true)
+const { openChat } = usePortalChatPanel()
+const { unreadCount } = usePortalMessageUnread()
+const copyrightYear = new Date().getFullYear()
 
 const localeLabel = computed(() => (
   locale.value.startsWith('es') ? t('localeEs') : t('localeEn')
@@ -231,43 +286,43 @@ const navItems = computed(() => [
     to: '/dashboard',
     icon: 'home',
     labelKey: 'dashboard',
-    testId: 'navDashboard',
+    testId: portalTestIds.navDashboard,
   },
   {
     to: '/appointments',
     icon: 'event',
     labelKey: 'appointments',
-    testId: 'navAppointments',
+    testId: portalTestIds.navAppointments,
   },
   {
     to: '/documents',
     icon: 'folder',
     labelKey: 'documents',
-    testId: 'navDocuments',
+    testId: portalTestIds.navDocuments,
   },
   {
     to: '/consents',
     icon: 'verified_user',
     labelKey: 'consents',
-    testId: 'navConsents',
+    testId: portalTestIds.navConsents,
   },
   {
     to: '/forms',
     icon: 'assignment',
     labelKey: 'forms',
-    testId: 'navForms',
+    testId: portalTestIds.navForms,
   },
   {
     to: '/profile',
     icon: 'person',
     labelKey: 'profile',
-    testId: 'navProfile',
+    testId: portalTestIds.navProfile,
   },
   {
     to: '/security',
     icon: 'lock',
     labelKey: 'security',
-    testId: 'navSecurity',
+    testId: portalTestIds.navSecurity,
   },
 ])
 

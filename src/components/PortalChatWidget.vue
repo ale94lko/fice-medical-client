@@ -19,7 +19,7 @@
             color="primary"
             :label="t('completeProfile')"
             to="/profile"
-            @click="close"
+            @click="closeChatAndStop"
           />
         </template>
       </q-banner>
@@ -32,7 +32,7 @@
         :sending="sending"
         :clinic-label="clinicLabel"
         :preview-urls="previewUrls"
-        @close="close"
+        @close="closeChatAndStop"
         @reload="onReload"
         @send="onSend"
         @upload="onUpload"
@@ -72,19 +72,21 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PortalMessageThread from
   'src/components/PortalMessageThread.vue'
 import { usePortalChat } from
   'src/composables/usePortalChat.js'
+import { usePortalChatPanel } from
+  'src/composables/usePortalChatPanel.js'
 import { portalTestIds } from 'src/test-ids/index.js'
 import { useAuthStore } from 'stores/auth-store.js'
 
 const POLL_MS = 15000
 const { t } = useI18n()
 const authStore = useAuthStore()
-const open = ref(false)
+const { open, openChat, closeChat } = usePortalChatPanel()
 const {
   messages,
   canSend,
@@ -107,15 +109,9 @@ const {
 let unreadTimer = null
 let chatTimer = null
 
-function close() {
-  open.value = false
+function closeChatAndStop() {
+  closeChat()
   stopChatPoll()
-}
-
-async function openChat() {
-  open.value = true
-  await ensureLoaded()
-  startChatPoll()
 }
 
 async function onReload() {
@@ -148,6 +144,15 @@ onMounted(() => {
 onUnmounted(() => {
   if (unreadTimer) {
     window.clearInterval(unreadTimer)
+  }
+  stopChatPoll()
+})
+
+watch(open, async(isOpen) => {
+  if (isOpen) {
+    await ensureLoaded()
+    startChatPoll()
+    return
   }
   stopChatPoll()
 })

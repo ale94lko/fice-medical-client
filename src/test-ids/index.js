@@ -159,6 +159,7 @@ export const portalTestIds = {
   messagesAttach: 'messages-btn-attach',
   messagesInput: 'messages-input',
   messagesSend: 'messages-btn-send',
+  messagesSending: (id) => `messages-sending-${id}`,
   messagesUnreadBadge: 'messages-unread-badge',
   consentsBtnOpen: (id) => `consents-btn-open-${id}`,
   consentsSignDialog: 'consents-sign-dialog',

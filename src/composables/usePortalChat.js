@@ -117,7 +117,7 @@ export function usePortalChat() {
   }
 
   async function pollNew() {
-    if (!canSend.value || document.hidden || sending.value) {
+    if (!canSend.value || document.hidden) {
       return
     }
     const incoming = await listPortalMessages(lastId())

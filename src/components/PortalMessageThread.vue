@@ -131,7 +131,16 @@
               </span>
             </button>
             <div class="portal-messages__foot">
-              {{ stampLabel(row.message) }}
+              <q-spinner
+                v-if="row.message.pending"
+                color="primary"
+                size="12px"
+                :aria-label="t('messagesSending')"
+                :data-testid="portalTestIds.messagesSending(
+                  row.message.id,
+                )"
+              />
+              <span>{{ stampLabel(row.message) }}</span>
             </div>
           </div>
         </article>
@@ -161,7 +170,6 @@
         dense
         round
         icon="attach_file"
-        :disable="sending"
         :aria-label="t('messagesAttach')"
         :data-testid="portalTestIds.messagesAttach"
         @click="fileInputRef?.click()"
@@ -173,7 +181,6 @@
         autogrow
         hide-bottom-space
         class="portal-messages__input col"
-        :disable="sending"
         :placeholder="t('messagesPlaceholder')"
         :data-testid="portalTestIds.messagesInput"
         @keydown.enter.exact.prevent="onSubmit"
@@ -184,7 +191,6 @@
         color="primary"
         icon="send"
         type="submit"
-        :loading="sending"
         :disable="!canSubmit"
         :aria-label="t('messagesSend')"
         :data-testid="portalTestIds.messagesSend"
@@ -258,10 +264,6 @@ function showAuthor(row) {
 }
 
 function stampLabel(msg) {
-  if (msg?.pending) {
-    return t('messagesSending')
-  }
-
   return formatPortalTime(msg?.createdAt) || ''
 }
 
@@ -284,7 +286,7 @@ function dayLabel(value) {
 
 function onSubmit() {
   const body = draft.value.trim()
-  if (!props.canSend || !body || props.sending) {
+  if (!props.canSend || !body) {
     return
   }
   emit('send', body)
@@ -294,7 +296,7 @@ function onSubmit() {
 function onPickFile(event) {
   const file = event.target?.files?.[0]
   event.target.value = ''
-  if (!file || !props.canSend || props.sending) {
+  if (!file || !props.canSend) {
     return
   }
   emit('upload', file)

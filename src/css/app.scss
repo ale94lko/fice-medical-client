@@ -1882,6 +1882,10 @@ input:-webkit-autofill:active {
 }
 
 .portal-messages__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
   margin-top: 4px;
   color: $text-muted;
   font-size: 0.6875rem;
@@ -1891,6 +1895,7 @@ input:-webkit-autofill:active {
 
 .portal-messages__item:not(.portal-messages__item--mine)
   .portal-messages__foot {
+  justify-content: flex-start;
   text-align: left;
 }
 

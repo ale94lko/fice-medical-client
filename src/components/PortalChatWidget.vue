@@ -83,7 +83,7 @@ import { usePortalChatPanel } from
 import { portalTestIds } from 'src/test-ids/index.js'
 import { useAuthStore } from 'stores/auth-store.js'
 
-const POLL_MS = 15000
+const POLL_MS = 5000
 const { t } = useI18n()
 const authStore = useAuthStore()
 const { open, openChat, closeChat } = usePortalChatPanel()

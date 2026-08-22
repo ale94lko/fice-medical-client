@@ -196,8 +196,14 @@ export default {
   consentSigned: 'Your signature was saved.',
   consentDeclined: 'Your response was saved.',
   consentSignatureHint: 'Sign below with your finger or stylus.',
+  consentClientSignerNotAllowed:
+    'This consent must be signed by a guardian or authorized representative.',
   consentSignatureClear: 'Clear',
   consentSignaturePlaceholder: 'Sign here',
+  consentAuthorizationTitle: 'Authorization information',
+  consentFieldsRequired:
+    'Please complete all required consent information before signing.',
+  consentFieldValueRequired: 'This field is required.',
   profileCardBody: 'View and update the name the clinic uses for you.',
   viewSection: 'Open',
   comingSoonHint: 'We are building this area next. Check back soon.',

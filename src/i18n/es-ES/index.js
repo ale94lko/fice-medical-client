@@ -198,8 +198,15 @@ export default {
   consentSigned: 'Tu firma quedó registrada.',
   consentDeclined: 'Tu respuesta quedó registrada.',
   consentSignatureHint: 'Firma abajo con el dedo o el lápiz.',
+  consentClientSignerNotAllowed:
+    'Este consentimiento debe firmarlo un tutor o representante autorizado.',
   consentSignatureClear: 'Borrar',
   consentSignaturePlaceholder: 'Firma aquí',
+  consentAuthorizationTitle: 'Información de autorización',
+  consentFieldsRequired:
+    'Complete toda la información de consentimiento '
+    + 'requerida antes de firmar.',
+  consentFieldValueRequired: 'Este campo es obligatorio.',
   profileCardBody:
     'Consulta y actualiza el nombre que usa tu clínica.',
   viewSection: 'Abrir',

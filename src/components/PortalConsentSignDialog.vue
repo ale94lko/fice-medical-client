@@ -43,8 +43,19 @@
             :srcdoc="framedHtml"
             @load="fitFrame"
           />
+          <PortalConsentFields
+            v-model="fieldValues"
+            :fields="authorizationFields"
+            :show-errors="fieldShowErrors"
+          />
+          <p
+            v-if="!clientMaySign"
+            class="text-body2 text-grey-7 q-mt-md q-mb-none"
+          >
+            {{ t('consentClientSignerNotAllowed') }}
+          </p>
           <SignatureCanvas
-            v-if="detail.signature_required !== false"
+            v-else-if="detail.signature_required !== false"
             v-model="signatureArtifact"
             size="tall"
             class="portal-consent-sign"
@@ -87,9 +98,16 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Notify } from 'quasar'
 import SignatureCanvas from 'src/components/SignatureCanvas.vue'
+import PortalConsentFields from 'src/components/PortalConsentFields.vue'
 import { api } from 'boot/axios'
 import { portalTestIds } from 'src/test-ids/index.js'
 import { portalPaths, unwrapData } from 'src/utils/portal-api.js'
+import {
+  buildConsentFieldValueWrites,
+  missingRequiredConsentFields,
+  normalizeConsentFieldValue,
+  valuesByKeyFromConsentFields,
+} from 'src/utils/consent-fields.js'
 
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
@@ -103,9 +121,74 @@ const loading = ref(false)
 const signing = ref(false)
 const declining = ref(false)
 const signatureArtifact = ref('')
+const fieldValues = ref({})
+const fieldShowErrors = ref(false)
 const frameRef = ref(null)
 
 const busy = computed(() => signing.value || declining.value)
+
+function parseAllowedSignerTypes(raw) {
+  if (Array.isArray(raw)) {
+    return raw
+      .map(item => String(item ?? '').trim().toUpperCase())
+      .filter(Boolean)
+  }
+  const token = String(raw ?? '').trim()
+  if (!token) {
+    return []
+  }
+
+  return token
+    .split(',')
+    .map(item => item.trim().toUpperCase())
+    .filter(Boolean)
+}
+
+function clientRequirementOpen(detail) {
+  const requirements = detail?.signature_requirements
+    ?? detail?.signatureRequirements
+  if (Array.isArray(requirements) && requirements.length) {
+    return requirements.some(item => {
+      if (item?.satisfied) {
+        return false
+      }
+
+      return parseAllowedSignerTypes(
+        item.allowed_signer_types ?? item.allowedSignerTypes,
+      ).includes('CLIENT')
+    })
+  }
+  const types = parseAllowedSignerTypes(
+    detail?.allowed_signer_types ?? detail?.allowedSignerTypes,
+  )
+  if (!types.length) {
+    return true
+  }
+
+  return types.includes('CLIENT')
+}
+
+const clientMaySign = computed(() => clientRequirementOpen(detail.value))
+
+const canSign = computed(() => {
+  if (!detail.value || !clientMaySign.value) {
+    return false
+  }
+  if (detail.value.signature_required === false) {
+    return true
+  }
+
+  return Boolean(String(signatureArtifact.value ?? '').trim())
+})
+
+const authorizationFields = computed(() => {
+  const raw = detail.value?.field_values ?? detail.value?.fieldValues
+  if (!Array.isArray(raw)) {
+    return []
+  }
+
+  return raw.map((item, index) => normalizeConsentFieldValue(item, index))
+})
 
 const framedHtml = computed(() => {
   const body = String(detail.value?.content_html ?? '')
@@ -120,17 +203,6 @@ const framedHtml = computed(() => {
     body,
     '</body></html>',
   ].join('')
-})
-
-const canSign = computed(() => {
-  if (!detail.value) {
-    return false
-  }
-  if (detail.value.signature_required === false) {
-    return true
-  }
-
-  return Boolean(String(signatureArtifact.value ?? '').trim())
 })
 
 function close() {
@@ -167,9 +239,14 @@ async function loadDetail() {
   }
   loading.value = true
   signatureArtifact.value = ''
+  fieldShowErrors.value = false
+  fieldValues.value = {}
   try {
     const { data } = await api.get(portalPaths.consent(props.consentId))
     detail.value = unwrapData(data)
+    fieldValues.value = valuesByKeyFromConsentFields(
+      authorizationFields.value,
+    )
   } catch {
     detail.value = null
     close()
@@ -182,10 +259,26 @@ async function onSign() {
   if (!canSign.value || !props.consentId) {
     return
   }
+  fieldShowErrors.value = true
+  if (missingRequiredConsentFields(
+    authorizationFields.value,
+    fieldValues.value,
+  ).length) {
+    Notify.create({
+      type: 'negative',
+      message: t('consentFieldsRequired'),
+    })
+
+    return
+  }
   signing.value = true
   try {
     await api.post(portalPaths.consentSign(props.consentId), {
       signatureArtifact: signatureArtifact.value,
+      fieldValues: buildConsentFieldValueWrites(
+        authorizationFields.value,
+        fieldValues.value,
+      ),
     })
     Notify.create({ type: 'positive', message: t('consentSigned') })
     emit('signed')
